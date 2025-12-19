@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0DFPKH2NM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-K0DFPKH2NM');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Admission Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+        }
+        fieldset {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        legend {
+            font-weight: bold;
+            background: black;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+<form id="admissionForm">
+
+    <!-- Personal Information -->
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label>First Name</label>
+        <input type="text" name="fname" required>
+
+        <label>Last Name</label>
+        <input type="text" name="lname" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Contact No</label>
+        <input type="tel" name="phone" pattern="[0-9]{10}" required>
+
+        <label>Apply for Class</label>
+        <select name="class" required>
+            <option value="">-- Select Class --</option>
+            <option>V</option>
+            <option>VI</option>
+            <option>VII</option>
+            <option>VIII</option>
+            <option>IX</option>
+        </select>
+    </fieldset>
+
+    <!-- Address -->
+    <fieldset>
+        <legend>Address</legend>
+
+        <label>Address Line 1</label>
+        <input type="text" name="address1" required>
+
+        <label>Address Line 2</label>
+        <input type="text" name="address2">
+
+        <label>City</label>
+        <input type="text" name="city" required>
+
+        <label>State</label>
+        <input type="text" name="state" required>
+
+        <label>Pin Code</label>
+        <input type="text" name="zip" pattern="[0-9]{6}" required>
+    </fieldset>
+
+    <!-- Fees -->
+    <fieldset>
+        <legend>Fees You Want to Pay</legend>
+
+        <label>Select Fees Amount (₹1550 – ₹3950)</label>
+        <select name="fees" required>
+            <option value="">-- Select Amount --</option>
+            <option>1550</option>
+            <option>1950</option>
+            <option>2450</option>
+            <option>2950</option>
+            <option>3450</option>
+            <option>3950</option>
+        </select>
+    </fieldset>
+
+    <button type="submit">Submit Application</button>
+
+</form>
+
+<script>
+document.getElementById("admissionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("https://script.google.com/macros/s/AKfycbyB3f7CMFDiMz6Wo3TUBJQI4OlYHz0HBJxqqv1nT3yWXbqgvcK8EcWPTAD6dA44AOo-HA/exec", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(msg => {
+        alert("Form submitted successfully!");
+        this.reset();
+    })
+    .catch(err => alert("Error submitting form"));
+});
+</script>
+
+</body>
+</html>
