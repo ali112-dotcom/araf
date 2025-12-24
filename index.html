@@ -63,6 +63,11 @@
         button:hover {
             background: #218838;
         }
+        .bengali {
+            font-family: 'tiro bangla', sans-serif;
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 
@@ -74,20 +79,28 @@
     <fieldset>
         <legend>Personal Information</legend>
 
-        <label>First Name</label>
-        <input type="text" name="fname" required>
+        <label>Student's Name <br/> 
+        <span class="bengali">ছাত্র/ছাত্রীর নাম</span></label>
+        <input type="text" name="studentname" required>
 
-        <label>Last Name</label>
-        <input type="text" name="lname" required>
-
-        <label>Email</label>
-        <input type="email" name="email" required>
-
-        <label>Contact No</label>
+        <label>Gender <br/>
+        <span class="bengali">লিঙ্গ</span></label>
+        <select name="gender" required>
+            <option value="">-- Select Gender --</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+        <label>Date of Birth <br/>
+        <span class="bengali">জন্ম তারিখ</span></label>
+        <input type="date" name="dob" required>
+        
+        <label>Contact No <br/>
+        <span class="bengali">যোগাযোগ নম্বর</span></label>
         <input type="tel" name="phone" pattern="[0-9]{10}" required>
 
-        <label>Apply for Class</label>
-        <select name="class" required>
+        <label>Apply for Class <br/>
+        <span class="bengali">শ্রেণি নির্বাচন করুন</span></label>
+        <select name="select_class" required>
             <option value="">-- Select Class --</option>
             <option>V</option>
             <option>VI</option>
@@ -101,19 +114,31 @@
     <fieldset>
         <legend>Address</legend>
 
-        <label>Address Line 1</label>
-        <input type="text" name="address1" required>
+        <label>Village<br/>
+        <span class="bengali">গ্রাম</span></label>
+        <input type="text" name="student_Village" required>
 
-        <label>Address Line 2</label>
-        <input type="text" name="address2">
+        <label>Post Office <br/>
+        <span class="bengali">পোস্ট অফিস</span></label>
+        <input type="text" name="student_PostOffice" required>
+        
+        <label>Police Station <br/>
+        <span class="bengali">থানা</span></label>
+        <input type="text" name="student_Police_Station" required>
 
-        <label>City</label>
-        <input type="text" name="city" required>
+        <label>District <br/>
+        <span class="bengali">জেলা</span></label>
+        <input type="text" name="student_district" required>
 
-        <label>State</label>
-        <input type="text" name="state" required>
+        <label>State <br/>
+        <span class="bengali">রাজ্য</span></label>
+        <input type="text" name="student_state" required>
 
-        <label>Pin Code</label>
+        <label>Country</label>
+        <input type="text" name="student_country" required value="India" readonly>
+
+        <label>Pin Code <br/>
+        <span class="bengali">পিন কোড</span></label>
         <input type="text" name="zip" pattern="[0-9]{6}" required>
     </fieldset>
 
@@ -143,7 +168,7 @@ document.getElementById("admissionForm").addEventListener("submit", function(e) 
 
     const formData = new FormData(this);
 
-    fetch("https://script.google.com/macros/s/AKfycbyB3f7CMFDiMz6Wo3TUBJQI4OlYHz0HBJxqqv1nT3yWXbqgvcK8EcWPTAD6dA44AOo-HA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbyBkX17357HjiVPhKkXDDLZFB6kIhg-cn3nvXy8FUP-iEf5nNjrPX_XItcZuM53J8HNDA/exec", {
         method: "POST",
         body: formData
     })
