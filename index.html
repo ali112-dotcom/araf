@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0DFPKH2NM"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -12,174 +11,602 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Admission Form</title>
+    <title>Official Student Admission Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+            --error-color: #dc3545;
+            --bg-color: #f4f6f9;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form {
-            max-width: 600px;
-            margin: auto;
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-color);
+            margin: 0;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 15px;
         }
-        fieldset {
-            margin-bottom: 15px;
+
+        /* --- CONTAINER & CARD --- */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- PROGRESS BAR --- */
+        .progress-container {
+            background: #e9ecef;
+            height: 8px;
+            width: 100%;
+        }
+        .progress-bar {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease-in-out;
+        }
+        .step-indicator {
+            text-align: center;
             padding: 15px;
-            border-radius: 15px;
-        }
-        legend {
             font-weight: bold;
-            background: black;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 10px;
+            color: #555;
+            border-bottom: 1px solid #eee;
         }
+
+        /* --- FORM STEPS --- */
+        .form-step {
+            display: none; /* Hidden by default */
+            padding: 25px;
+            animation: fadeIn 0.5s;
+        }
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- INPUTS & LABELS --- */
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+        .bengali {
+            font-family: 'Tiro Bangla', serif;
+            font-size: 0.9em;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
         }
         input, select {
             width: 100%;
-            padding: 8px;
-            border-radius: 10px;
+            padding: 10px;
             border: 1px solid #ccc;
-            margin-left: -10px;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box; /* Fixes width issues */
+            transition: border 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,86,179,0.2);
+        }
+        input:invalid {
+            border-left: 4px solid var(--error-color);
+        }
+        input:valid {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
         }
         button {
-            margin-top: 20px;
-            padding: 12px;
-            width: 100%;
-            background: #28a745;
-            color: white;
+            padding: 12px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
         }
-        button:hover {
-            background: #218838;
+        .btn-next, .btn-submit {
+            background: var(--primary-color);
+            color: white;
         }
-        .bengali {
-            font-family: 'tiro bangla', sans-serif;
-            font-size: 14px;
-            color: #555;
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-submit {
+            background: var(--secondary-color);
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        button:hover:not(:disabled) {
+            filter: brightness(1.1);
+        }
+
+        /* --- LOADING OVERLAY --- */
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- PRINT STYLES (THE OFFICIAL RECEIPT) --- */
+        #printLayout {
+            display: none; /* Hidden on screen */
+        }
+
+        @media print {
+            body { 
+                background: white; 
+                padding: 0;
+            }
+            .container, #loadingOverlay { 
+                display: none !important; /* Hide the form */
+            }
+            #printLayout {
+                display: block !important; /* Show receipt */
+                width: 100%;
+                font-family: 'Times New Roman', serif;
+            }
+            .print-header {
+                text-align: center;
+                border-bottom: 2px solid black;
+                margin-bottom: 20px;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 15px;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+            .print-footer {
+                margin-top: 50px;
+                display: flex;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<form id="admissionForm">
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Submitting Application...</p>
+        <p>Please wait, do not close the window.</p>
+    </div>
 
-    <!-- Personal Information -->
-    <fieldset>
-        <legend>Personal Information</legend>
-
-        <label>Student's Name <br/> 
-        <span class="bengali">ছাত্র/ছাত্রীর নাম</span></label>
-        <input type="text" name="studentname" required>
-
-        <label>Gender <br/>
-        <span class="bengali">লিঙ্গ</span></label>
-        <select name="gender" required>
-            <option value="">-- Select Gender --</option>
-            <option>Male</option>
-            <option>Female</option>
-        </select>
-        <label>Date of Birth <br/>
-        <span class="bengali">জন্ম তারিখ</span></label>
-        <input type="date" name="dob" required>
+    <div class="container">
         
-        <label>Contact No <br/>
-        <span class="bengali">যোগাযোগ নম্বর</span></label>
-        <input type="tel" name="phone" pattern="[0-9]{10}" required>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="step-indicator">
+            Step <span id="stepCount">1</span> of 3: <span id="stepTitle">Personal Details</span>
+        </div>
 
-        <label>Apply for Class <br/>
-        <span class="bengali">শ্রেণি নির্বাচন করুন</span></label>
-        <select name="select_class" required>
-            <option value="">-- Select Class --</option>
-            <option>V</option>
-            <option>VI</option>
-            <option>VII</option>
-            <option>VIII</option>
-            <option>IX</option>
-        </select>
-    </fieldset>
+        <form id="admissionForm">
 
-    <!-- Address -->
-    <fieldset>
-        <legend>Address</legend>
+            <div class="form-step active" id="step1">
+                <h3>Personal Information</h3>
+                
+                <label>Student's Name <span class="bengali">ছাত্র/ছাত্রীর নাম</span></label>
+                <input type="text" name="studentname" id="p_name" required oninput="validateStep()">
 
-        <label>Village<br/>
-        <span class="bengali">গ্রাম</span></label>
-        <input type="text" name="student_Village" required>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>Gender <span class="bengali">লিঙ্গ</span></label>
+                        <select name="gender" id="p_gender" required oninput="validateStep()">
+                            <option value="">Select</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Blood Group <span class="bengali">রক্তের গ্রুপ</span></label>
+                        <input type="text" name="blood_group" id="p_bg" required oninput="validateStep()">
+                    </div>
+                </div>
 
-        <label>Post Office <br/>
-        <span class="bengali">পোস্ট অফিস</span></label>
-        <input type="text" name="student_PostOffice" required>
-        
-        <label>Police Station <br/>
-        <span class="bengali">থানা</span></label>
-        <input type="text" name="student_Police_Station" required>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>Date of Birth <span class="bengali">জন্ম তারিখ</span></label>
+                        <input type="date" name="dob" id="p_dob" required oninput="validateStep()">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Class <span class="bengali">শ্রেণি</span></label>
+                        <select name="select_class" id="p_class" required oninput="validateStep()">
+                            <option value="">Select</option>
+                            <option>V</option>
+                            <option>VI</option>
+                            <option>VII</option>
+                            <option>VIII</option>
+                            <option>IX</option>
+                        </select>
+                    </div>
+                </div>
 
-        <label>District <br/>
-        <span class="bengali">জেলা</span></label>
-        <input type="text" name="student_district" required>
+                <label>Admission Date <span class="bengali">ভর্তির তারিখ</span></label>
+                <select name="admission_date" id="p_admDate" required oninput="validateStep()">
+                     <option value="">-- Select Session --</option>
+                    <option value="01/01/2025">2025-2026 session</option>
+                    <option value="01/01/2026">2026-2027 session</option>
+                </select>
 
-        <label>State <br/>
-        <span class="bengali">রাজ্য</span></label>
-        <input type="text" name="student_state" required>
+                <input type="hidden" name="session" value="2025-2026">
 
-        <label>Country</label>
-        <input type="text" name="student_country" required value="India" readonly>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>Religion <span class="bengali">ধর্ম</span></label>
+                        <input type="text" name="religion" id="p_rel" value="Islam" required oninput="validateStep()">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Mother Tongue <span class="bengali">মাতৃভাষা</span></label>
+                        <input type="text" name="mother_tongue" id="p_mt" value="Bengali" required oninput="validateStep()">
+                    </div>
+                </div>
 
-        <label>Pin Code <br/>
-        <span class="bengali">পিন কোড</span></label>
-        <input type="text" name="zip" pattern="[0-9]{6}" required>
-    </fieldset>
+                <label>Student Contact No <span class="bengali">যোগাযোগ নম্বর</span></label>
+                <input type="tel" name="phone" id="p_phone" pattern="[0-9]{10}" placeholder="10 Digit Mobile Number" required oninput="validateStep()">
 
-    <!-- Fees -->
-    <fieldset>
-        <legend>Fees You Want to Pay</legend>
+                <label>Email ID <span class="bengali">ইমেইল আইডি</span></label>
+                <input type="email" name="email" id="p_email" required oninput="validateStep()">
 
-        <label>Select Fees Amount (₹1550 – ₹3950)</label>
-        <select name="fees" required>
-            <option value="">-- Select Amount --</option>
-            <option>1550</option>
-            <option>1950</option>
-            <option>2450</option>
-            <option>2950</option>
-            <option>3450</option>
-            <option>3950</option>
-        </select>
-    </fieldset>
+                <div class="btn-group" style="justify-content: flex-end;">
+                    <button type="button" class="btn-next" id="nextBtn1" onclick="nextStep()" disabled>Next &rarr;</button>
+                </div>
+            </div>
 
-    <button type="submit">Submit Application</button>
+            <div class="form-step" id="step2">
+                <h3>Parent's Details</h3>
 
-</form>
+                <div style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin:0; color: var(--primary-color);">Father's Info</h4>
+                    <label>Name <span class="bengali">পিতার নাম</span></label>
+                    <input type="text" name="father_name" id="p_fname" required oninput="validateStep()">
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex:1">
+                            <label>Occupation <span class="bengali">পেশা</span></label>
+                            <input type="text" name="father_occupation" id="p_focc" required oninput="validateStep()">
+                        </div>
+                         <div style="flex:1">
+                            <label>Income <span class="bengali">আয়</span></label>
+                            <input type="number" name="father_income" required oninput="validateStep()">
+                        </div>
+                    </div>
+                    
+                    <label>Phone / WhatsApp <span class="bengali">পিতার ফোন</span></label>
+                    <input type="tel" name="father_contact" id="p_fcontact" pattern="[0-9]{10}" required oninput="validateStep()">
+                    <input type="hidden" name="father_whatsapp" value="Same"> <label>Qualification <span class="bengali">পিতার শিক্ষাগত যোগ্যতা</span></label>
+                    <input type="text" name="father_qualification" required oninput="validateStep()">
+                </div>
 
-<script>
-document.getElementById("admissionForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+                <div style="background: #f9f9f9; padding: 10px; border-radius: 8px;">
+                    <h4 style="margin:0; color: var(--primary-color);">Mother's Info</h4>
+                    <label>Name <span class="bengali">মাতার নাম</span></label>
+                    <input type="text" name="mother_name" id="p_mname" required oninput="validateStep()">
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex:1">
+                            <label>Occupation <span class="bengali">পেশা</span></label>
+                            <input type="text" name="mother_occupation" required oninput="validateStep()">
+                        </div>
+                         <div style="flex:1">
+                             <label>Qualification <span class="bengali">শিক্ষাগত যোগ্যতা</span></label>
+                            <input type="text" name="mother_qualification" required oninput="validateStep()">
+                        </div>
+                    </div>
+                    
+                    <label>Phone / WhatsApp <span class="bengali">মাতার ফোন</span></label>
+                    <input type="tel" name="mother_contact" pattern="[0-9]{10}" required oninput="validateStep()">
+                     <input type="hidden" name="mother_income" value="0">
+                     <input type="hidden" name="mother_whatsapp" value="Same">
+                </div>
 
-    const formData = new FormData(this);
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">&larr; Back</button>
+                    <button type="button" class="btn-next" id="nextBtn2" onclick="nextStep()" disabled>Next &rarr;</button>
+                </div>
+            </div>
 
-    fetch("https://script.google.com/macros/s/AKfycbyBkX17357HjiVPhKkXDDLZFB6kIhg-cn3nvXy8FUP-iEf5nNjrPX_XItcZuM53J8HNDA/exec", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-    .then(msg => {
-        alert("Form submitted successfully!");
-        this.reset();
-    })
-    .catch(err => alert("Error submitting form"));
-});
-</script>
+            <div class="form-step" id="step3">
+                <h3>Address Details</h3>
+                
+                <label>Village <span class="bengali">গ্রাম</span></label>
+                <input type="text" name="student_Village" id="p_vill" required oninput="validateStep()">
+
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex:1">
+                        <label>Post Office <span class="bengali">পোস্ট অফিস</span></label>
+                        <input type="text" name="student_PostOffice" id="p_po" required oninput="validateStep()">
+                    </div>
+                    <div style="flex:1">
+                         <label>Police Station <span class="bengali">থানা</span></label>
+                        <input type="text" name="student_Police_Station" id="p_ps" required oninput="validateStep()">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                     <div style="flex:1">
+                        <label>District <span class="bengali">জেলা</span></label>
+                        <input type="text" name="student_district" id="p_dist" required oninput="validateStep()">
+                    </div>
+                    <div style="flex:1">
+                        <label>State <span class="bengali">রাজ্য</span></label>
+                        <input type="text" name="student_state" id="p_state" required oninput="validateStep()">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                     <div style="flex:1">
+                        <label>Pin Code <span class="bengali">পিন কোড</span></label>
+                        <input type="text" name="zip" id="p_pin" pattern="[0-9]{6}" required oninput="validateStep()">
+                    </div>
+                     <div style="flex:1">
+                        <label>Country</label>
+                        <input type="text" name="student_country" value="India" readonly>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep()">&larr; Back</button>
+                    <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit Application</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div id="printLayout">
+        <div class="print-header">
+            <h2>OFFICIAL ADMISSION APPLICATION</h2>
+            <p>Generated: <span id="print_timestamp"></span></p>
+        </div>
+
+        <h3>Student Profile</h3>
+        <table class="print-table">
+            <tr>
+                <th>Name</th>
+                <td><span id="pr_name"></span></td>
+                <th>Gender</th>
+                <td><span id="pr_gender"></span></td>
+            </tr>
+            <tr>
+                <th>Date of Birth</th>
+                <td><span id="pr_dob"></span></td>
+                <th>Blood Group</th>
+                <td><span id="pr_bg"></span></td>
+            </tr>
+            <tr>
+                <th>Class Applied</th>
+                <td><span id="pr_class"></span></td>
+                <th>Religion</th>
+                <td><span id="pr_rel"></span></td>
+            </tr>
+            <tr>
+                <th>Mobile</th>
+                <td><span id="pr_phone"></span></td>
+                <th>Email</th>
+                <td><span id="pr_email"></span></td>
+            </tr>
+        </table>
+
+        <h3>Parent Information</h3>
+        <table class="print-table">
+            <tr>
+                <th>Father's Name</th>
+                <td><span id="pr_fname"></span></td>
+                <th>Contact</th>
+                <td><span id="pr_fcontact"></span></td>
+            </tr>
+            <tr>
+                <th>Occupation</th>
+                <td><span id="pr_focc"></span></td>
+                <th>Mother's Name</th>
+                <td><span id="pr_mname"></span></td>
+            </tr>
+        </table>
+
+        <h3>Residential Address</h3>
+        <table class="print-table">
+            <tr>
+                <th>Village</th>
+                <td><span id="pr_vill"></span></td>
+                <th>PO</th>
+                <td><span id="pr_po"></span></td>
+            </tr>
+            <tr>
+                <th>PS</th>
+                <td><span id="pr_ps"></span></td>
+                <th>Dist/State</th>
+                <td><span id="pr_dist"></span>, <span id="pr_state"></span></td>
+            </tr>
+            <tr>
+                <th>Pin Code</th>
+                <td><span id="pr_pin"></span></td>
+                <th>Country</th>
+                <td>India</td>
+            </tr>
+        </table>
+
+        <div class="print-footer">
+            <div>
+                <br>_______________________<br>
+                Guardian Signature
+            </div>
+            <div>
+                <br>_______________________<br>
+                Office Seal & Signature
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let currentStep = 0;
+        const steps = document.querySelectorAll(".form-step");
+        const progressBar = document.getElementById("progressBar");
+        const stepCountSpan = document.getElementById("stepCount");
+        const stepTitleSpan = document.getElementById("stepTitle");
+        const stepTitles = ["Personal Details", "Parent Information", "Address Information"];
+
+        // Initialize
+        updateUI();
+
+        function updateUI() {
+            // Show current step, hide others
+            steps.forEach((step, index) => {
+                step.classList.toggle("active", index === currentStep);
+            });
+
+            // Update Progress Bar
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update Text
+            stepCountSpan.innerText = currentStep + 1;
+            stepTitleSpan.innerText = stepTitles[currentStep];
+
+            validateStep(); // Check if current step is valid on load
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        // Real-time Validation Function
+        function validateStep() {
+            const currentStepDiv = steps[currentStep];
+            const inputs = currentStepDiv.querySelectorAll("input, select");
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    isValid = false;
+                }
+            });
+
+            // Find the button in this step
+            if(currentStep === 0) {
+                document.getElementById("nextBtn1").disabled = !isValid;
+            } else if(currentStep === 1) {
+                document.getElementById("nextBtn2").disabled = !isValid;
+            } else if(currentStep === 2) {
+                document.getElementById("submitBtn").disabled = !isValid;
+            }
+        }
+
+        // Map Input Values to Print Layout
+        function fillPrintValues() {
+            // Set Timestamp
+            document.getElementById("print_timestamp").innerText = new Date().toLocaleString();
+
+            // Map IDs from Input -> Print Span
+            const map = {
+                "p_name": "pr_name", "p_gender": "pr_gender", "p_dob": "pr_dob",
+                "p_bg": "pr_bg", "p_class": "pr_class", "p_rel": "pr_rel",
+                "p_phone": "pr_phone", "p_email": "pr_email", "p_fname": "pr_fname",
+                "p_fcontact": "pr_fcontact", "p_focc": "pr_focc", "p_mname": "pr_mname",
+                "p_vill": "pr_vill", "p_po": "pr_po", "p_ps": "pr_ps",
+                "p_dist": "pr_dist", "p_state": "pr_state", "p_pin": "pr_pin"
+            };
+
+            for (let [inputId, printId] of Object.entries(map)) {
+                let inputVal = document.getElementById(inputId).value;
+                document.getElementById(printId).innerText = inputVal;
+            }
+        }
+
+        // Form Submission Logic
+        document.getElementById("admissionForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            // Show Loading Overlay
+            document.getElementById("loadingOverlay").style.display = "flex";
+
+            const formData = new FormData(this);
+
+            fetch("https://script.google.com/macros/s/AKfycbyBkX17357HjiVPhKkXDDLZFB6kIhg-cn3nvXy8FUP-iEf5nNjrPX_XItcZuM53J8HNDA/exec", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(msg => {
+                // Hide Loader
+                document.getElementById("loadingOverlay").style.display = "none";
+                
+                // Prepare Data for Print
+                fillPrintValues();
+
+                // Ask to Print
+                if(confirm("Form Submitted Successfully! Do you want to download the Official Receipt?")) {
+                    window.print();
+                }
+
+                // Reset Form and go back to step 1
+                this.reset();
+                currentStep = 0;
+                updateUI();
+            })
+            .catch(err => {
+                document.getElementById("loadingOverlay").style.display = "none";
+                alert("Error submitting form. Please check your internet connection.");
+            });
+        });
+    </script>
 
 </body>
 </html>
