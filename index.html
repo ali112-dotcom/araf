@@ -17,19 +17,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="demo.css">
-    <link rel="stylesheet" href="admission-style.css">
-</head>
+    <link rel="stylesheet" href="pagestyle.css">
+    </head>
 <body>
 
     <header>
         <div class="head-container">
             <img src="https://alarafmission.org/assets/images/logo.png" alt="Al-A'raf Mission Logo" class="logo-image">
-           
             <div class="portal-title">
-                Official Student Admission Portal
+                Smart Mission Official Student registration Portal
             </div>
         </div>
     </header>
@@ -37,17 +34,12 @@
     <main>
         <section id="home" class="hero">
             <div class="hero-content">
-                <h1>Where Little Minds Blossom</h1>
+                <h1>AL-A'RAF MISSION</h1>
                 <p>An ideal residential institution for talented students to achieve their dreams.</p>
                 <a href="#admissionForm" class="btn-primary">Smart Mission</a>
             </div>
         </section>
     </main>
-
-
-
-
-
 
     <div id="loadingOverlay">
         <div class="spinner"></div>
@@ -70,7 +62,7 @@
                 <h3>Personal Information</h3>
                 
                 <label>Student's Name <span class="bengali">ছাত্র/ছাত্রীর নাম</span></label>
-                <input type="text" name="studentname" id="p_name" required oninput="validateStep()">
+                <input type="text" name="student_name" id="p_name" required oninput="validateStep()">
 
                 <div style="display: flex; gap: 10px;">
                     <div style="flex: 1;">
@@ -83,7 +75,17 @@
                     </div>
                     <div style="flex: 1;">
                         <label>Blood Group <span class="bengali">রক্তের গ্রুপ</span></label>
-                        <input type="text" name="blood_group" id="p_bg" required oninput="validateStep()">
+                        <select name="blood_group" id="p_bg" required oninput="validateStep()">
+                            <option value="">Select</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+                        </select>
                     </div>
                 </div>
 
@@ -135,57 +137,87 @@
                     <button type="button" class="btn-next" id="nextBtn1" onclick="nextStep()" disabled>Next &rarr;</button>
                 </div>
             </div>
-
+            
             <div class="form-step" id="step2">
                 <h3>Parent's Details</h3>
 
                 <div style="background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
                     <h4 style="margin:0; color: var(--primary-color);">Father's Info</h4>
-                    <label>Name <span class="bengali">পিতার নাম</span></label>
+
+                    <label>Father's Name <span class="bengali">পিতার নাম</span></label>
                     <input type="text" name="father_name" id="p_fname" required oninput="validateStep()">
                     
-                    <div style="display: flex; gap: 10px;">
+                    <label>Qualification <span class="bengali">পিতার শিক্ষাগত যোগ্যতা</span></label>
+                    <input type="text" name="father_qualification" id="p_fquali" required oninput="validateStep()">
+                   
+                   <div style="display: flex; gap: 10px;">
                         <div style="flex:1">
                             <label>Occupation <span class="bengali">পেশা</span></label>
-                            <input type="text" name="father_occupation" id="p_focc" required oninput="validateStep()">
+                            <input list="occupation_list" name="father_occupation" id="p_focc" required oninput="validateStep()">
+                            <datalist id="occupation_list">
+                                <option value="Farmer">
+                                <option value="Businessman">
+                                <option value="Teacher">
+                                <option value="Driver">
+                                <option value="Laborer">
+                                <option value="Government Employee">
+                                <option value="Private Sector Employee">
+                                <option value="Self-Employed">
+                                <option value="Unemployed">
+                            </datalist>
                         </div>
-                         <div style="flex:1">
+
+                        <div style="flex:1">
                             <label>Income <span class="bengali">আয়</span></label>
-                            <input type="number" name="father_income" required oninput="validateStep()">
+                            <input type="number" name="father_income" id="p_fincome" required oninput="validateStep()">
                         </div>
                     </div>
-                    
-                    <label>Phone / WhatsApp <span class="bengali">পিতার ফোন</span></label>
-                    <input type="tel" name="father_contact" id="p_fcontact" pattern="[0-9]{10}" required oninput="validateStep()">
-                    <input type="hidden" name="father_whatsapp" value="Same"> <label>Qualification <span class="bengali">পিতার শিক্ষাগত যোগ্যতা</span></label>
-                    <input type="text" name="father_qualification" required oninput="validateStep()">
+
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex:1">
+                            <label>Phone<span class="bengali">পিতার ফোন</span></label>
+                            <input type="tel" name="father_contact" id="p_fcontact" pattern="[0-9]{10}" required oninput="validateStep()">
+                        </div>
+                        <div style="flex:1">
+                            <label>WhatsApp no<span class="bengali">ওয়াটসঅ্যাপ নম্বর</span></label>
+                            <input type="tel" name="father_whatsapp" id="p_fwhatsapp" pattern="[0-9]{10}" required oninput="validateStep()">   
+                        </div>
+                    </div>
                 </div>
 
                 <div style="background: #f9f9f9; padding: 10px; border-radius: 8px;">
                     <h4 style="margin:0; color: var(--primary-color);">Mother's Info</h4>
-                    <label>Name <span class="bengali">মাতার নাম</span></label>
+                    <label>Mother's Name <span class="bengali">মাতার নাম</span></label>
                     <input type="text" name="mother_name" id="p_mname" required oninput="validateStep()">
                     
                     <div style="display: flex; gap: 10px;">
                         <div style="flex:1">
-                            <label>Occupation <span class="bengali">পেশা</span></label>
-                            <input type="text" name="mother_occupation" required oninput="validateStep()">
-                        </div>
-                         <div style="flex:1">
                              <label>Qualification <span class="bengali">শিক্ষাগত যোগ্যতা</span></label>
                             <input type="text" name="mother_qualification" required oninput="validateStep()">
                         </div>
+                        <div style="flex:1">
+                            <label>Occupation <span class="bengali">পেশা</span></label>
+                            <input type="text" name="mother_occupation" required oninput="validateStep()">
+                        </div>
                     </div>
-                    
-                    <label>Phone / WhatsApp <span class="bengali">মাতার ফোন</span></label>
-                    <input type="tel" name="mother_contact" pattern="[0-9]{10}" required oninput="validateStep()">
-                     <input type="hidden" name="mother_income" value="0">
-                     <input type="hidden" name="mother_whatsapp" value="Same">
-                </div>
 
-                <div class="btn-group">
-                    <button type="button" class="btn-prev" onclick="prevStep()">&larr; Back</button>
-                    <button type="button" class="btn-next" id="nextBtn2" onclick="nextStep()" disabled>Next &rarr;</button>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex:1">
+                            <label>Income <span class="bengali">আয়</span> </label>
+                            <input type="number" name="mother_income" required oninput="validateStep()">
+                        </div>
+
+                        <div style="flex:1">
+                            <label>Phone / WhatsApp <span class="bengali">মাতার ফোন</span></label>
+                            <input type="tel" name="mother_contact" pattern="[0-9]{10}" required oninput="validateStep()">
+                            <input type="hidden" name="mother_whatsapp" value="Same">
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn-prev" onclick="prevStep()">&larr; Back</button>
+                        <button type="button" class="btn-next" id="nextBtn2" onclick="nextStep()" disabled>Next &rarr;</button>
+                    </div>
                 </div>
             </div>
 
@@ -223,7 +255,7 @@
                         <input type="text" name="zip" id="p_pin" pattern="[0-9]{6}" required oninput="validateStep()">
                     </div>
                      <div style="flex:1">
-                        <label>Country</label>
+                        <label>Country<span class="bengali">দেশ</span></label>
                         <input type="text" name="student_country" value="India" readonly>
                     </div>
                 </div>
@@ -239,7 +271,8 @@
 
     <div id="printLayout">
         <div class="print-header">
-            <h2>OFFICIAL ADMISSION APPLICATION</h2>
+            <h1>AL-A'RAF MISSION</h1>
+            <h2>Smart Mission Registration Form</h2>
             <p>Generated: <span id="print_timestamp"></span></p>
         </div>
 
@@ -280,8 +313,14 @@
                 <td><span id="pr_fcontact"></span></td>
             </tr>
             <tr>
+                <th>Qualification</th>
+                <td><span id="pr_fquali"></span></td>
                 <th>Occupation</th>
                 <td><span id="pr_focc"></span></td>
+            </tr>
+            <tr>
+                <th>Income</th>
+                <td><span id="pr_fincome"></span></td>
                 <th>Mother's Name</th>
                 <td><span id="pr_mname"></span></td>
             </tr>
@@ -393,17 +432,40 @@
 
             // Map IDs from Input -> Print Span
             const map = {
-                "p_name": "pr_name", "p_gender": "pr_gender", "p_dob": "pr_dob",
-                "p_bg": "pr_bg", "p_class": "pr_class", "p_rel": "pr_rel",
-                "p_phone": "pr_phone", "p_email": "pr_email", "p_fname": "pr_fname",
-                "p_fcontact": "pr_fcontact", "p_focc": "pr_focc", "p_mname": "pr_mname",
-                "p_vill": "pr_vill", "p_po": "pr_po", "p_ps": "pr_ps",
-                "p_dist": "pr_dist", "p_state": "pr_state", "p_pin": "pr_pin"
+                // Student Details
+                "p_name": "pr_name", 
+                "p_gender": "pr_gender", 
+                "p_dob": "pr_dob",
+                "p_bg": "pr_bg", 
+                "p_class": "pr_class", 
+                "p_rel": "pr_rel",
+                "p_phone": "pr_phone", 
+                "p_email": "pr_email", 
+                
+                // Parent Details (Fixed the missing fields)
+                "p_fname": "pr_fname",
+                "p_fcontact": "pr_fcontact", 
+                "p_fquali": "pr_fquali", 
+                "p_focc": "pr_focc", 
+                "p_fincome": "pr_fincome", 
+                "p_mname": "pr_mname",
+                
+                // Address Details
+                "p_vill": "pr_vill", 
+                "p_po": "pr_po", 
+                "p_ps": "pr_ps",
+                "p_dist": "pr_dist", 
+                "p_state": "pr_state", 
+                "p_pin": "pr_pin"
             };
 
             for (let [inputId, printId] of Object.entries(map)) {
-                let inputVal = document.getElementById(inputId).value;
-                document.getElementById(printId).innerText = inputVal;
+                let inputEl = document.getElementById(inputId);
+                let printEl = document.getElementById(printId);
+
+                if (inputEl && printEl) {
+                    printEl.innerText = inputEl.value;
+                }
             }
         }
 
@@ -416,7 +478,7 @@
 
             const formData = new FormData(this);
 
-            fetch("https://script.google.com/macros/s/AKfycbyBkX17357HjiVPhKkXDDLZFB6kIhg-cn3nvXy8FUP-iEf5nNjrPX_XItcZuM53J8HNDA/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbyWYwG_4KOxbiW81b2TJHRvvXRoA5TRHiIfdUBIxJ4f0AdTL5y6Lx0goUxiyn0m6e65dw/exec", {
                 method: "POST",
                 body: formData
             })
