@@ -284,3 +284,15 @@
                 justify-content: space-between;
             }
         }
+        /* --- UPDATED VALIDATION STYLES --- */
+
+/* Target BOTH input and select boxes for INVALID state (Red) */
+input:invalid, select:invalid {
+    border-left: 4px solid var(--error-color);
+    box-shadow: none; /* Optional: removes default browser glow to make it clearer */
+}
+
+/* Target BOTH input and select boxes for VALID state (Green) */
+input:valid, select:valid {
+    border-left: 4px solid var(--secondary-color);
+}
