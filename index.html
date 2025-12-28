@@ -126,14 +126,20 @@
                     </div>
                 </div>
 
-                <label>Admission Date <span class="bengali">ভর্তির তারিখ</span></label>
-                <select name="admission_date" id="p_admDate" required oninput="validateStep()">
-                     <option value="">-- Select Session --</option>
-                    <option value="01/01/2025">2025-2026 session</option>
-                    <option value="01/01/2026">2026-2027 session</option>
-                </select>
-
-                <input type="hidden" name="session" value="2025-2026">
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>Admission Date <span class="bengali">ভর্তির তারিখ</span></label>
+                        <select name="admission_date" id="p_admDate" required oninput="validateStep()">
+                        <option value="">-- Select Session --</option>
+                        <option value="01/01/2025">2025-2026 session</option>
+                        <option value="01/01/2026">2026-2027 session</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Aadhaar Number <span class="bengali">আধার নম্বর</span></label>
+                        <input type="text" name="aadhaar_number" id="p_aadhaar" pattern="[0-9]{12}" maxlength="12" placeholder="12 Digit Aadhaar No" required oninput="validateStep()">
+                    </div>
+                </div>
 
                 <div style="display: flex; gap: 10px;">
                     <div style="flex: 1;">
@@ -312,14 +318,17 @@
             <tr>
                 <th>Class Applied</th>
                 <td><span id="pr_class"></span></td>
-                <th>Religion</th>
-                <td><span id="pr_rel"></span></td>
+                <th>Aadhaar No</th> <td><span id="pr_aadhaar"></span></td>
             </tr>
             <tr>
+                <th>Religion</th>
+                <td><span id="pr_rel"></span></td>
                 <th>Mobile</th>
                 <td><span id="pr_phone"></span></td>
+            </tr>
+            <tr>
                 <th>Email</th>
-                <td><span id="pr_email"></span></td>
+                <td colspan="3"><span id="pr_email"></span></td>
             </tr>
         </table>
 
@@ -487,10 +496,11 @@ function handleFileSelect() {
             const map = {
                 // Student Details
                 "p_name": "pr_name", 
-                "p_gender": "pr_gender", 
+                "p_gender": "pr_gender",
                 "p_dob": "pr_dob",
                 "p_bg": "pr_bg", 
-                "p_class": "pr_class", 
+                "p_class": "pr_class",
+                "p_aadhaar": "pr_aadhaar", // <--- ADD THIS LINE 
                 "p_rel": "pr_rel",
                 "p_phone": "pr_phone", 
                 "p_email": "pr_email", 
@@ -531,7 +541,7 @@ function handleFileSelect() {
 
             const formData = new FormData(this);
 
-            fetch("https://script.google.com/macros/s/AKfycbwWUmlNmH1SC4IYIJ-vvs9yHlnJAHeed9Bp26ZFUPr2YH69cEWi-pdRagOr6HltoARRwg/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbx1eHbUKcLRj1ok6ibz3t9AqhW0qYBCJ2JUfNkRrkdnXqaPcfJH_Pk7F65s1hGW5JhWKg/exec", {
                 method: "POST",
                 body: formData
             })
